@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import org.opencv.core.*;
 
 import org.opencv.imgcodecs.*;
+import org.opencv.imgproc.Moments;
 import org.opencv.videoio.*;
 
 
@@ -188,7 +189,7 @@ public class Controller {
 
     public void detectColor_ButtonPressed() {
         Mat original_img = new Mat();
-        // Mat framMat = new Mat();
+
         Thread myT = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -212,6 +213,8 @@ public class Controller {
                         //   Highgui.imwrite("D:\\YY.bmp",original_img);
                         Mat original_img2 = original_img.clone();
                         Mat original_img3 = original_img.clone();
+                        Mat gray = original_img.clone();
+                        Mat thr = original_img.clone();
                         ///detect Color
 
                         //convert to hsv
@@ -256,16 +259,30 @@ public class Controller {
                         boolean redLed = false;
                         double blackWhitePixel;
                         int whitePixelFramCounter = 0;
+
+
+                        Core.MinMaxLocResult mmr = Core.minMaxLoc(original_img2);
+                        Point matchLoc;
+                        matchLoc = mmr.minLoc;
+
                         for (int rows = 0; rows < original_img.rows(); rows++) {
                             for (int cols = 0; cols < original_img.cols(); cols++) {
                                 blackWhitePixel = original_img2.get(rows, cols)[0];
                                 if (blackWhitePixel != 0.0) {
                                     //start counting if you count 50 then foundMatch!
                                     whitePixelFramCounter += 1;
-                                    if (whitePixelFramCounter == 3000) {
+                                    if (whitePixelFramCounter == 5000) {
                                         System.out.println(blackWhitePixel);
                                         System.out.println("row=" + rows + " cols=" + cols);
-                                        Imgproc.drawMarker(original_img, new Point(cols + 30, rows + 70), new Scalar(255, 0, 0), 9, 9, 20, 3);
+                                        //Imgproc.drawMarker(original_img, new Point(cols + 30, rows + 70), new Scalar(255, 0, 0), 9, 9, 20, 3);
+
+                                        //find center of mass
+                                        Imgproc.threshold( original_img2, thr, 100,255,Imgproc.THRESH_BINARY);
+                                        Moments  m = Imgproc.moments(thr,true);
+                                        Point p=new Point(m.m10/m.m00, m.m01/m.m00);
+                                        Imgproc.putText(original_img,"RED",p,4,3.0,new Scalar(0,0,255),3);
+                                        //end find center of mass
+
                                         redLed = true;
 
                                     } else {
@@ -308,9 +325,7 @@ public class Controller {
                         //try to find countor from img2
 
 
-                        Core.MinMaxLocResult mmr = Core.minMaxLoc(original_img2);
-                        Point matchLoc;
-                        matchLoc = mmr.minLoc;
+
 
 
                         System.out.println("stop her");
