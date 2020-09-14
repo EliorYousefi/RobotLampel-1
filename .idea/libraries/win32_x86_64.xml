@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="win32-x86-64">
+    <CLASSES>
+      <root url="jar://D:/openCV/opencv/build/java/opencv-430.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://D:/jss4/openCV_PrintS/Tess4J-3.2.1-src/Tess4J/lib/win32-x86-64" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://D:/openCV/opencv/build/java/opencv-430.jar!/" />
+    </SOURCES>
+  </library>
+</component>
