@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class Controller {
     @FXML
-    Button idButtun, reduceTropy, startBotButton;
+    Button idButtun, reduceTropy, startBotButton,detectIMGButton;
     @FXML
     ImageView myIMG, myIMG2, myIMG3, myIMG4, myIMG5, myIMG6;
     @FXML
@@ -186,6 +186,82 @@ public class Controller {
 
 
     }
+
+    public void detectImg_ButtonPressed() {
+        Thread myT = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Mat original_img = new Mat();
+                VideoCapture cap = new VideoCapture();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                cap.open(0);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (cap.isOpened()) {
+                    while (true) {
+                        System.out.println("camera open");
+                        cap.read(original_img);
+                        Mat findTemplateMat = original_img.clone();
+
+                        ///LOGIC GOES HER
+                        Mat template=myOpenCVobject.imread("D:\\template.png");
+                        int resultsCol=findTemplateMat.cols()-template.cols()+1;
+                        int resultsRow=findTemplateMat.rows()-template.rows()+1;
+                        Mat results=new Mat(resultsRow,resultsCol, CvType.CV_32FC1);
+
+                        Imgproc.matchTemplate(findTemplateMat,template,results,1);
+                        Core.normalize(results,results,0,1,Core.NORM_MINMAX,-1,new Mat());
+
+                        Core.MinMaxLocResult mmr=Core.minMaxLoc(results);
+                        Point matchLoc;
+
+//detect how many min values there is
+                        int countMinValues=0;
+                        for (int rows = 0; rows < results.rows(); rows++) {
+                            for (int cols = 0; cols < results.cols(); cols++) {
+                                if(results.get(rows, cols)[0]<0.3){
+                                    countMinValues+=1;
+                                }
+
+                            }
+                        }
+
+                        matchLoc=mmr.minLoc;
+                        System.out.println(countMinValues);
+                        if (countMinValues>29000 && countMinValues<65000) {
+                            Imgproc.rectangle(findTemplateMat, matchLoc, new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows()), new Scalar(0, 255, 0), 2);
+                        }
+
+
+                        ///LOGIC GOES HER
+
+                        //OUTPUT GOES HER
+                        Image myimage = myOpenCVobject.matToImage(original_img);
+                        myIMG.setPreserveRatio(true);
+                        myIMG.setImage(myimage);
+
+                        Image myimage2 = myOpenCVobject.matToImage(findTemplateMat);
+                        myIMG2.setPreserveRatio(true);
+                        myIMG2.setImage(myimage2);
+
+                        Image myimage3 = myOpenCVobject.matToImage(original_img);
+                        myIMG3.setPreserveRatio(true);
+                        myIMG3.setImage(myimage3);
+                        //OUTPUT GOES HER
+                    }
+                }
+            }
+        });
+          myT.start();
+    }
+
 
     public void detectColor_ButtonPressed() {
         Mat original_img = new Mat();

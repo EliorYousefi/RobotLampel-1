@@ -128,7 +128,7 @@
                         </children></AnchorPane>
                 </content>
             </Tab>
-            <Tab text="Lampel Rubik's cube Solver">
+            <Tab text="Lampel Robot Help">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
@@ -147,7 +147,8 @@
                                     <ImageView fx:id="myIMG4" fitHeight="225.0" fitWidth="316.0" layoutX="62.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" x="180.0" />
                                     <ImageView fx:id="myIMG5" fitHeight="225.0" fitWidth="316.0" layoutX="389.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" x="180.0" />
                                     <ImageView fx:id="myIMG6" fitHeight="225.0" fitWidth="316.0" layoutX="716.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" x="180.0" />
-                                    <Button fx:id="detectColorButton" layoutX="34.0" layoutY="505.0" mnemonicParsing="false" onAction="#detectColor_ButtonPressed" text="Color Detect" />
+                                    <Button fx:id="detectColorButton" layoutX="9.0" layoutY="505.0" mnemonicParsing="false" onAction="#detectColor_ButtonPressed" text="Color Detect" />
+                                    <Button fx:id="detectIMGButton" layoutX="97.0" layoutY="505.0" mnemonicParsing="false" onAction="#detectImg_ButtonPressed" text="IMG Detect" />
                                     <TextField fx:id="fromHue" alignment="CENTER" layoutX="18.0" layoutY="281.0" prefHeight="25.0" prefWidth="43.0" promptText="Shue" text="43">
                                         <font>
                                             <Font name="System Bold" size="12.0" />
