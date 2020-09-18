@@ -208,15 +208,42 @@ public class Controller {
                     while (true) {
                         System.out.println("camera open");
                         cap.read(original_img);
-                        Mat findTemplateMat = original_img.clone();
+                        Mat videoFrameImage = original_img.clone();
+
 
                         ///LOGIC GOES HER
-                        Mat template=myOpenCVobject.imread("D:\\template.png");
-                        int resultsCol=findTemplateMat.cols()-template.cols()+1;
-                        int resultsRow=findTemplateMat.rows()-template.rows()+1;
+                        Mat template=myOpenCVobject.imread("D:\\template_from_camera.png");
+
+                        int videoFrameWidth=videoFrameImage.size(1);
+                        int videoFrameHeight=videoFrameImage.size(0);
+
+                        int templateWidth=template.size(1);
+                        int templateHeight=template.size(0);
+
+                        //double scale = float(width)/input.size().width;
+
+                       // cv::resize(inputArray, outputArray, cv::Size(0, 0), scale, scale);
+
+
+                        int resultsRow=-1;
+                        int resultsCol=-1;
+
+                        while (resultsRow<=0 || resultsCol<=0) {
+                            resultsCol = videoFrameImage.cols() - template.cols() + 1;
+                            resultsRow = videoFrameImage.rows() - template.rows() + 1;
+
+                             templateWidth=template.size(1);
+                            templateHeight=template.size(0);
+
+                            Size scaleSize = new Size(templateWidth/2,templateHeight/2);
+                        if(resultsRow<=0 || resultsCol<=0) {
+                            Imgproc.resize(template, template, scaleSize, 0, 0, Imgproc.INTER_AREA);
+                         }
+                        }
+
                         Mat results=new Mat(resultsRow,resultsCol, CvType.CV_32FC1);
 
-                        Imgproc.matchTemplate(findTemplateMat,template,results,1);
+                        Imgproc.matchTemplate(videoFrameImage,template,results,1);
                         Core.normalize(results,results,0,1,Core.NORM_MINMAX,-1,new Mat());
 
                         Core.MinMaxLocResult mmr=Core.minMaxLoc(results);
@@ -236,7 +263,7 @@ public class Controller {
                         matchLoc=mmr.minLoc;
                         System.out.println(countMinValues);
                         if (countMinValues>29000 && countMinValues<65000) {
-                            Imgproc.rectangle(findTemplateMat, matchLoc, new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows()), new Scalar(0, 255, 0), 2);
+                            Imgproc.rectangle(videoFrameImage, matchLoc, new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows()), new Scalar(0, 255, 0), 2);
                         }
 
 
@@ -247,11 +274,11 @@ public class Controller {
                         myIMG.setPreserveRatio(true);
                         myIMG.setImage(myimage);
 
-                        Image myimage2 = myOpenCVobject.matToImage(findTemplateMat);
+                        Image myimage2 = myOpenCVobject.matToImage(videoFrameImage);
                         myIMG2.setPreserveRatio(true);
                         myIMG2.setImage(myimage2);
 
-                        Image myimage3 = myOpenCVobject.matToImage(original_img);
+                        Image myimage3 = myOpenCVobject.matToImage(template);
                         myIMG3.setPreserveRatio(true);
                         myIMG3.setImage(myimage3);
                         //OUTPUT GOES HER

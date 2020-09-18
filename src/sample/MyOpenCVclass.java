@@ -158,6 +158,10 @@ public class MyOpenCVclass {
         return foundMatch;
     }
 
+    public void scaleDownImageAndMaintainAscpectRatio(){
+
+    }
+
     public Mat cropImg(Mat imagToCrop,int x,int y,int width,int hight)
     {
         Rect cutImage=new Rect(x,y,width,hight);

@@ -132,7 +132,7 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Pane prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <Pane prefHeight="573.0" prefWidth="1250.0" AnchorPane.bottomAnchor="-30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <children>
                                     <Button fx:id="startCamera" layoutX="10.0" layoutY="164.0" mnemonicParsing="false" onAction="#startCamera_ButtonPressed" text="START Vid - Canny Edge Detector" />
                                     <Label layoutX="10.0" layoutY="197.0" text="Thresh Hold - smaller More Sensative" />
